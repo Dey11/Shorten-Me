@@ -6,9 +6,13 @@ const Shorten = () => {
   const handleOnSubmit = async (ev) => {
     ev.preventDefault();
     console.log(shortUrl);
-    const res = await axios.post("http://localhost:3000/url", {
-      url: shortUrl,
-    });
+    const res = await axios.post(
+      "http://localhost:3000/url",
+      {
+        url: shortUrl,
+      },
+      { withCredentials: true }
+    );
     const shortCode = res.data.id;
     setShortUrl("http:localhost:3000/url" + `/${shortCode}`);
   };
