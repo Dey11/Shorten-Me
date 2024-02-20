@@ -1,12 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import LinkPng from "../assets/linkpic.png";
+import { UserContext } from "../UserContext";
+import { useContext } from "react";
 
 const Home = () => {
+  const { userInfo } = useContext(UserContext);
+  const username = userInfo;
   return (
     <div className="pt-20">
       <div className=" max-w-[600px] mx-auto text-center font-bold text-4xl">
-        Want to shorten your link?
+        {!username && <p>Want to shorten your link?</p>}
+        {username && <p>Welcome, {username}</p>}
         <span className="block pt-10">
           Try{" "}
           <Link to="/shorten">
