@@ -1,17 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import axios from "axios";
+import { UserContext } from "../UserContext";
 
 const Header = () => {
-  useEffect(async () => {
+  // const [loggedIn, setLoggedIn] = useState(null);
+  const { userInfo, setUserInfo } = useContext(UserContext);
+
+  const dataFetch = async () => {
     const response = await axios.post(
       "http://localhost:3000/auth/profile",
       {},
       { withCredentials: true }
     );
-    console.log(response);
+    if (response.status === 200) {
+      setUserInfo(response.data.username);
+    } else {
+      setUserInfo(null);
+    }
+    console.log(userInfo);
+  };
+
+  useEffect(() => {
+    dataFetch();
   }, []);
+
+  const logout = async () => {
+    const response = await axios.post(
+      "http://localhost:3000/auth/logout",
+      {},
+      { withCredentials: true }
+    );
+    setUserInfo(null);
+  };
+
+  const username = userInfo;
 
   return (
     <div className="w-full bg-[#295b5c] rounded-b-sm ">
@@ -24,10 +48,17 @@ const Header = () => {
             <Link to="/shorten">Shorten Me!</Link>
           </li>
           <li className="hover:text-[#d4f3f0] hover:bg-[#396365] 2xl:col-start-11 ">
-            <Link to="/signup"> Sign Up</Link>
+            {username && <Link to="/profile"> {username}</Link>}
+            {!username && <Link to="/signup"> Register </Link>}
           </li>
           <li className="hover:text-[#d4f3f0] hover:bg-[#396365] 2xl:col-start-12">
-            <Link to="/login"> Login </Link>
+            {!username && <Link to="/login"> Login </Link>}
+            {username && (
+              <Link onClick={logout} to="/">
+                {" "}
+                Logout{" "}
+              </Link>
+            )}
           </li>
         </ul>
       </nav>

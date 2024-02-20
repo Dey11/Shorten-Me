@@ -1,5 +1,6 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { UserContextProvider } from "./UserContext";
 import RootLayout from "./layouts/RootLayout";
 import Home from "./pages/Home";
 import Shorten from "./pages/Shorten";
@@ -44,7 +45,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+      <UserContextProvider>
+        <RouterProvider router={router} />
+      </UserContextProvider>
     </>
   );
 }

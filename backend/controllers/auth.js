@@ -53,13 +53,16 @@ const logout = async (req, res) => {
 
 const profile = async (req, res) => {
   const { token } = req.cookies;
-  jwt.verify(token, process.env.SECRET, {}, (err, data) => {
-    if (err) {
-      throw err;
-    }
-    res.status(200).json(data);
-  });
-  res.status(400).json({ message: "Not logged in" });
+  try {
+    jwt.verify(token, process.env.SECRET, {}, (err, data) => {
+      if (err) {
+        throw err;
+      }
+      res.status(200).json(data);
+    });
+  } catch (err) {
+    res.status(400).json({ message: "Not logged in" });
+  }
 };
 
 module.exports = {

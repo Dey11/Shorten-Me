@@ -15,7 +15,7 @@ router.post("/logout", (req, res) => {
   logout(req, res);
 });
 
-router.get("/profile", (req, res) => {
+router.post("/profile", (req, res) => {
   profile(req, res);
 });
 
